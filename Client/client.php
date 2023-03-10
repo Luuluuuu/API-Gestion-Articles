@@ -26,7 +26,7 @@
 
     <?php
         $result = file_get_contents(
-            'http://www.kilya.biz/api/chuckn_facts.php', // remplacer lien par le serveur
+            'http://localhost/API-Gestion-Articles/Serveur/apiApp.php', // remplacer lien par le serveur
             false,
             stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
         );
