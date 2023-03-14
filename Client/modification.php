@@ -18,24 +18,18 @@
 
             if (isset($_GET['modifier'])) {
 
-                //header("Location:client.php");
+                header("Location:client.php");
             
-                $id = $_GET["id"];
                 $entree = $_GET['entree'];
 
                 ////////////////// Cas des méthodes POST et PUT //////////////////
                 /// Déclaration des données à envoyer au Serveur
-                $data = array("id" => $id,
-                                "phrase" => $entree, 
-                                "vote" => "0",
-                                "faute" => "0",
-                                "signalement" => "0"
-                            );
+                $data = array("id" => $_GET["id"],"phrase" => $entree);
                 $data_string = json_encode($data);
                 /// Envoi de la requête
                 $result = file_get_contents(
-                    'http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=' . $id, // remplacer lien par le serveur
-                    false,
+                    'http://www.kilya.biz/api/chuckn_facts.php', // remplacer lien par le serveur
+                    null,
                     stream_context_create(array(
                         'http' => array(
                             'method' => 'PUT',
