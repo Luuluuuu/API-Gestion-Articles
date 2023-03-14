@@ -11,7 +11,7 @@
         /// Envoi de la requête
         $result = file_get_contents(
             'http://www.kilya.biz/api/chuckn_facts.php', // remplacer lien par le serveur
-            null,
+            false,
             stream_context_create(array(
                 'http' => array(
                     'method' => 'POST',
