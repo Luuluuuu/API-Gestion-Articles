@@ -39,7 +39,8 @@
                     FROM manipuler
                     GROUP BY idArticle) compteurDislike
                     ON compteurLike.idArticle = compteurDislike.idArticle) likeDislike
-            ON infosArticle.idArticle = likeDislike.idArticle";
+            ON infosArticle.idArticle = likeDislike.idArticle
+            ORDER BY infosArticle.DatePublication DESC";
 
             if (!empty($_GET['id'])){
                 /// Traitement

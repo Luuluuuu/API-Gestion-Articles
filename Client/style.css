@@ -1,0 +1,25 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Trebuchet MS';
+}
+
+body {
+    background-color: RGB(144, 137, 203);
+}
+
+#header {
+    background-color: RGB(131, 40, 144);
+}
+
+#body {
+    margin: auto;
+    max-width: 1200px;
+}
+
+.article {
+    background-color: white;
+    padding: 3em;
+    margin: 10px;
+    border-radius: 1em;
+}
