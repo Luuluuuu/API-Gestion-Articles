@@ -24,9 +24,23 @@
         /// Cas de la méthode GET
         case "GET" :
             /// Récupération des critères de recherche envoyés par le Client
-            $req = "SELECT Utilisateur.NomUtilisateur, Article.*
-            FROM Article, Utilisateur            
-            WHERE Article.IdUtilisateur = Utilisateur.IdUtilisateur";
+            $req = "SELECT infosArticle.*, COALESCE(likeDislike.Alike, 0) \"Like\", 
+                COALESCE(likeDislike.ADislike, 0) Dislike 
+            FROM (SELECT Utilisateur.NomUtilisateur Auteur, Article.*
+                FROM Article, Utilisateur            
+                WHERE Article.IdUtilisateur = Utilisateur.IdUtilisateur) infosArticle
+            LEFT JOIN
+                (SELECT compteurLike.idArticle, ALike, ADislike 
+            FROM (SELECT idArticle, SUM(ALike) ALike
+                    FROM manipuler
+                    GROUP BY idArticle) compteurLike
+                INNER JOIN
+                    (SELECT idArticle, SUM(ADislike) ADislike
+                    FROM manipuler
+                    GROUP BY idArticle) compteurDislike
+                    ON compteurLike.idArticle = compteurDislike.idArticle) likeDislike
+            ON infosArticle.idArticle = likeDislike.idArticle";
+
             if (!empty($_GET['id'])){
                 /// Traitement
                 $req .= " AND idArticle = :id";

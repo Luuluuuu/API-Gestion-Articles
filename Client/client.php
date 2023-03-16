@@ -19,7 +19,6 @@
         <th>Auteur</th>
         <th>Contenu</th>
         <th>Publication</th>
-        <th>Date d'ajout</th>
         <th>Like</th>
         <th>Dislike</th>
         <th>Action</th>
@@ -35,9 +34,11 @@
         $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         foreach ($result['data'] as $row) {
             if (strpos($row['Contenu'],"<") === false) {
-                echo '</td><td>' . $row['NomUtilisateur'] . 
+                echo '</td><td>' . $row['Auteur'] . 
                 '</td><td>' . $row['Contenu'] . 
                 '</td><td>' . $row['DatePublication'] .
+                '</td><td>' . $row['Like'] .
+                '</td><td>' . $row['Dislike'] .
                 '</td><td>  <a href="modification.php?id='. $row['IdArticle']. '">Modifier</a> 
                 <a href="suppression.php?id='. $row['IdArticle']. '">Supprimer</a> </td></tr>';
             }     
