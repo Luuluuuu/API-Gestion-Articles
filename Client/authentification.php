@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="" method="get">
+    <form action="apiAuth.php" method="post">
         <label for="login">Login : </label>
         <input type="text" name="login" id="login"><br/>
         <label for="mdp">Mot de passe : </label>
