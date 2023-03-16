@@ -75,5 +75,4 @@ function get_bearer_token() {
     }
     return null;
 }
-
 ?>
