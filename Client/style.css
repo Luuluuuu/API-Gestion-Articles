@@ -8,11 +8,32 @@ body {
     background-color: RGB(144, 137, 203);
 }
 
-#header {
-    background-color: RGB(131, 40, 144);
+/* index.php */
+#auth {
+    margin: auto;
+    width: 25em;
 }
 
-#body {
+/* client.php */
+#header {
+    background-color: RGB(131, 40, 144);
+    padding: 2em;
+}
+
+#header div{
+    margin: auto;
+    max-width: 1200px;
+    display: flex;
+}
+
+#pseudo {
+    font-weight: bold;
+    font-size : 2em;
+    color: white;
+    flex: auto;
+}
+
+#body{
     margin: auto;
     max-width: 1200px;
 }
