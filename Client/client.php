@@ -39,7 +39,7 @@
                 '</td><td>' . $row['phrase'] . 
                 '</td><td>' . $row['date_ajout'] .
                 // '</td><td>' . $row['like'] . $row['dislike'] . à rajouter après
-                '</td><td>  <a href="modification.php?id='. $row['id']. '">Modifier</a> <a href="deleteChucknFact.php?id='. $row['id']. '">Supprimer</a> </td></tr>';
+                '</td><td>  <a href="modification.php?id='. $row['id']. '">Modifier</a> <a href="suppression.php?id='. $row['id']. '">Supprimer</a> </td></tr>';
             }     
         }
     ?>

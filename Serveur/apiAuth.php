@@ -8,20 +8,20 @@
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch ($http_method){
-        /// Cas de la méthode GET
+        /// Cas de la méthode POST
         case "POST" :
             // Récupère les données entrées par le Client
             $postedData = file_get_contents('php://input');
             $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
 
             // Si aucun login ou aucun mdp ne sont renseignés
-            if (empty($postedData["login"]) || empty($postedData["pwd"])){
-                deliver_response(400, "Veuillez renseigner votre login (login) et votre mot de passe (pwd)", null);
+            if (empty($postedData["login"]) || empty($postedData["mdp"])){
+                deliver_response(400, "Veuillez renseigner votre login (login) et votre mot de passe (mdp)", null);
 
             } else {
                 // Récupération des données saisies
                 $login = $postedData["login"];
-                $pwd = $postedData["pwd"];
+                $pwd = $postedData["mdp"];
 
                 // Si le login n'existe pas
                 if (!isset($identifiants[$login])){
@@ -29,7 +29,7 @@
 
                 // Si le mot de passe ne correspond pas
                 } else if ($pwd != $identifiants[$login]){
-                    deliver_response(404, "Votre mot de passe est incorrecte.", null);
+                    deliver_response(404, "Votre mot de passe est incorrect.", null);
 
                 //Traitement
                 } else {
