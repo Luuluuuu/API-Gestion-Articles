@@ -16,11 +16,12 @@
 
     <table>
     <tr>
-        <th>ID</th>
-        <!-- <th>Auteur</th> --> <!-- à rajouter après-->
+        <th>Auteur</th>
+        <th>Contenu</th>
         <th>Publication</th>
         <th>Date d'ajout</th>
-        <!-- <th>Like/Dislike</th> --> <!-- à rajouter après-->
+        <th>Like</th>
+        <th>Dislike</th>
         <th>Action</th>
     </tr>
 
@@ -33,13 +34,12 @@
 
         $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
         foreach ($result['data'] as $row) {
-            if (strpos($row['phrase'],"<") === false) {
-                echo '<tr><td>'. $row['id']. 
-                // '</td><td>' . $row['auteur'] . à rajouter après
-                '</td><td>' . $row['phrase'] . 
-                '</td><td>' . $row['date_ajout'] .
-                // '</td><td>' . $row['like'] . $row['dislike'] . à rajouter après
-                '</td><td>  <a href="modification.php?id='. $row['id']. '">Modifier</a> <a href="deleteChucknFact.php?id='. $row['id']. '">Supprimer</a> </td></tr>';
+            if (strpos($row['Contenu'],"<") === false) {
+                echo '</td><td>' . $row['NomUtilisateur'] . 
+                '</td><td>' . $row['Contenu'] . 
+                '</td><td>' . $row['DatePublication'] .
+                '</td><td>  <a href="modification.php?id='. $row['IdArticle']. '">Modifier</a> 
+                <a href="deleteChucknFact.php?id='. $row['IdArticle']. '">Supprimer</a> </td></tr>';
             }     
         }
     ?>

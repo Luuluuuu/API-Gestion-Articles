@@ -11,18 +11,12 @@
 
     /// Paramétrage de l'entête HTTP (pour la réponse au Client)
     header("Content-Type:application/json");
-    require_once("jwt_utils.php");
 
-    // Connexion à la BDD
-    $server = "127.0.0.1";; 
-    $db = "ChuckNorris";
-    $login = "root";
-    $mdp = "";
-    try{
-        $linkpdo = new PDO("mysql:host=$server;dbname=$db;charset=UTF8",$login,$mdp);
-    } catch (Exception $e){
-        die('Erreur : '.$e->getMessage());
-    }
+    //
+    require_once("jwt_utils.php");    
+    require_once("connexionBDD.php");
+
+    $linkpdo = connexion();
     
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
@@ -30,10 +24,12 @@
         /// Cas de la méthode GET
         case "GET" :
             /// Récupération des critères de recherche envoyés par le Client
-            $req = "SELECT * FROM Chuckn_Facts WHERE phrase IS NOT NULL";
+            $req = "SELECT Utilisateur.NomUtilisateur, Article.*
+            FROM Article, Utilisateur            
+            WHERE Article.IdUtilisateur = Utilisateur.IdUtilisateur";
             if (!empty($_GET['id'])){
                 /// Traitement
-                $req .= " AND id = :id";
+                $req .= " AND idArticle = :id";
 
                 $res = $linkpdo->prepare($req);
                 $res->bindParam(':id', $_GET['id'], PDO::PARAM_INT);                
@@ -114,7 +110,7 @@
                     // Erreur de syntaxe
                     deliver_response(400, 
                     "Erreur de syntaxe : veuillez spécifier tous les champs dans le body (sauf la date d'ajout et la date de modification).", 
-                    NULL);
+                    $postedData);
                 }
             } else {
                 // Erreur de syntaxe
