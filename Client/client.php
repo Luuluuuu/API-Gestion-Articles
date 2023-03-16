@@ -39,7 +39,7 @@
                 '</td><td>' . $row['Contenu'] . 
                 '</td><td>' . $row['DatePublication'] .
                 '</td><td>  <a href="modification.php?id='. $row['IdArticle']. '">Modifier</a> 
-                <a href="deleteChucknFact.php?id='. $row['IdArticle']. '">Supprimer</a> </td></tr>';
+                <a href="suppression.php?id='. $row['IdArticle']. '">Supprimer</a> </td></tr>';
             }     
         }
     ?>
