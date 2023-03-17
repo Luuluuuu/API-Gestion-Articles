@@ -24,6 +24,7 @@
 
         <div>
             <?php
+                session_start();
                 $result = file_get_contents(
                     'http://localhost/API-Gestion-Articles/Serveur/apiApp.php', // remplacer lien par le serveur
                     false,

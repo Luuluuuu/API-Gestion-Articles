@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="auth">
-        <form class="article" action="apiAuth.php" method="post">
+        <form class="article" action="clientAuth.php" method="post">
             <label for="login">Login : </label>
             <input type="text" name="login" id="login"><br/>
             <label for="mdp">Mot de passe : </label>
