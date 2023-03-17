@@ -17,8 +17,8 @@
 
     <div id="body">
         <form action="publication.php" method="get">
-            <label for="entree">Texte à ajouter : </label>
-            <input type="text" name="entree" id="entree">
+            <label for="contenu">Ecrivez votre article : </label>
+            <input type="textarea" name="contenu" id="contenu">
             <input type="submit" value="Ajouter" name="ajouter">
         </form>
 

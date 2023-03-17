@@ -65,15 +65,20 @@
             $postedData = file_get_contents('php://input');
             $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
 
-            if (!empty($postedData["phrase"])){
-                /// Traitement
-                $req = "INSERT INTO ChuckN_Facts (phrase,date_ajout) VALUES (?,NOW())";
+            if (!empty($postedData["contenu"])){
+                // Traitement
+                $pseudo = "TataB0b0";
+                $reqPseudo = "SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?";             
+                $resPseudo = $linkpdo->prepare($reqPseudo);
+                $resPseudo->execute(array($pseudo));
+
+                $req = "INSERT INTO Article (Contenu, DatePublication, IdUtilisateur) VALUES (?,NOW(),?)";
                 $res = $linkpdo->prepare($req);
-                $res->execute(array($postedData["phrase"]));
+                $res->execute(array($postedData["contenu"], $resPseudo->fetch()[0])); 
 
                 // Affichage de la ressource insérée
                 $id = $linkpdo->lastInsertId();
-                $res = $linkpdo->prepare("SELECT * FROM Chuckn_Facts 
+                $res = $linkpdo->prepare("SELECT * FROM Article 
                                             WHERE phrase IS NOT NULL 
                                             AND id = $id");
                 $res->execute();

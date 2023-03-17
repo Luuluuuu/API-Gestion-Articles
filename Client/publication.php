@@ -3,14 +3,13 @@
     header("Location:client.php");
 
     if (isset($_GET['ajouter'])) {
-    
-        $entree = $_GET['entree'];
+        $contenu = $_GET['contenu'];
 
-        $data = array("phrase" => $entree);
+        $data = array("contenu" => $contenu);
         $data_string = json_encode($data);
         /// Envoi de la requête
         $result = file_get_contents(
-            'http://www.kilya.biz/api/chuckn_facts.php', // remplacer lien par le serveur
+            'http://localhost/API-Gestion-Articles/Serveur/apiApp.php', 
             false,
             stream_context_create(array(
                 'http' => array(
@@ -23,6 +22,6 @@
                 )
             ))
         );
-    
+        print_r($result);
     }
 ?>
