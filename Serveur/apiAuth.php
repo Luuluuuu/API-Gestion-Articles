@@ -54,7 +54,7 @@
                 } else {
 
                     //Récupération du rôle
-                    //$req = "SELECT Role FROM utilisateur WHERE $postedData["login"] = NomUtilisateur AND $postedData["mdp"] = MotDePasse";
+                    //$req = "SELECT Role FROM utilisateur WHERE $login = NomUtilisateur AND $pwd = MotDePasse";
 
 
                     $headers = array("alg"=>"HS256", "typ"=>"JWT");
