@@ -6,16 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Articles</title>
+
+    <style>
+
+    </style>
 </head>
 <body>
     <div id="header">
         <div>
-            <p id="pseudo">Pseudo</p> 
+            <?php
+                session_start();
+                if (isset($_SESSION["pseudo"])){
+                    echo "<p id='pseudo'>" . $_SESSION["pseudo"] . "</p>";
+                }
+            ?>
             <button onclick="window.location.href='authentification.php'" id="connexion">Connexion</button>
             <button onclick="<?php
-            session_start();
-            session_destroy();
-            echo 'window.location.href=\'authentification.php\'';
+                session_destroy();
+                echo "window.location.href='index.php'";
             ?>" id="deconnexion">Déconnexion</button>
         </div>
     </div>

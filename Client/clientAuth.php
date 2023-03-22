@@ -2,9 +2,6 @@
 
     session_start();
     if (isset($_POST['connexion'])) {
-
-        // header("Location:index.php");
-    
         $login = $_POST['login'];
         $mdp = $_POST['mdp'];
 
@@ -29,8 +26,12 @@
                     )
                 ))
             );
+            // Récupération du résultat
             $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-            $_SESSION["token"] = $result["data"];
+            $payload = explode(".",$result["data"]); // Explosion du token
+            $payloadDecode = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR); // Récupération du tableau de données
+            $_SESSION["pseudo"] = $payloadDecode["username"]; // Création de la session
+
             header("Location:index.php");
         } catch (\JsonException $exception) {
             if (strpos($http_response_header[0], "404")){
