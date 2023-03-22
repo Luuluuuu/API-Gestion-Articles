@@ -1,9 +1,9 @@
 <?php
 
-    header("Location:client.php");
+    header("Location:index.php");
 
     $result = file_get_contents(
-        'http://www.kilya.biz/api/chuckn_facts.php?id='. $_GET['id'], // remplacer lien par le serveur
+        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id='. $_GET['id'], // remplacer lien par le serveur
         false,
         stream_context_create(array('http' => array('method' => 'DELETE'))) // ou GET
     );

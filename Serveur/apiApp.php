@@ -67,7 +67,7 @@
 
             if (!empty($postedData["contenu"])){
                 // Traitement
-                $pseudo = "TataB0b0";
+                $pseudo = $_SESSION["pseudo"];
                 $reqPseudo = "SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?";             
                 $resPseudo = $linkpdo->prepare($reqPseudo);
                 $resPseudo->execute(array($pseudo));
