@@ -5,16 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>Accueil</title>
+    <title>Articles</title>
 </head>
 <body>
-    <form action="clientAuth.php" method="post">
-        <div id="auth">
-            <h1>Connexion</h1>
-            <input type="text" name="login" id="login" placeholder="Entrez votre identifiant"><br/>
-            <input type="password" name="mdp" id="mdp" placeholder="Entrez votre mot de passe"><br/>
-            <input type="submit" id="submit" value="Connexion" name="connexion">
+    <div id="header">
+        <div>
+            <p id="pseudo">Pseudo</p> 
+            <button onclick="window.location.href='authentification.php'">Connexion</button>
+            <button onclick="<?php
+            session_start();
+            session_destroy();
+            echo 'window.location.href=\'index.php\'';
+            ?>">Déconnexion</button>
         </div>
-    </form>
+    </div>
+
+    <div id="body">
+        <form action="publication.php" method="get">
+            <label for="contenu">Ecrivez votre article : </label>
+            <input type="textarea" name="contenu" id="contenu">
+            <input type="submit" value="Ajouter" name="ajouter">
+        </form>
+
+        <div>
+            <?php
+                session_start();
+                $result = file_get_contents(
+                    'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
+                    false,
+                    stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
+                );
+
+                $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+                foreach ($result['data'] as $row) {
+                    echo "<div class='article'>" . $row['Auteur']
+                    . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
+                    . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
+                    . $row['Contenu'] . "<br/>"
+                    . $row['Like']  . $row['Dislike'] . $row['DatePublication'] .
+                    "</div>";
+                }
+            ?>
+        </div>
+    </div>
 </body>
 </html>
