@@ -33,12 +33,17 @@
 
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
                 foreach ($result['data'] as $row) {
-                    echo "<div class='article'>" . $row['Auteur']
+                    echo "<div class='article'>"
+                    . "<div class='contenu'>"
+                    . $row['Auteur'] . "<br/>"
+                    . $row['Contenu'] . "<br/>"
+                    . $row['Like']  . $row['Dislike'] . $row['DatePublication']
+                    ."</div>"
+                    . "<div class='boutons'>"
                     . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
                     . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                    . $row['Contenu'] . "<br/>"
-                    . $row['Like']  . $row['Dislike'] . $row['DatePublication'] .
-                    "</div>";
+                    ."</div>"
+                    ."</div>";
                 }
             ?>
         </div>
