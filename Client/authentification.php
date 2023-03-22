@@ -8,14 +8,13 @@
     <title>Accueil</title>
 </head>
 <body>
-    <div id="auth">
-        <form class="article" action="clientAuth.php" method="post">
-            <label for="login">Login : </label>
-            <input type="text" name="login" id="login"><br/>
-            <label for="mdp">Mot de passe : </label>
-            <input type="password" name="mdp" id="mdp"><br/>
-            <input type="submit" value="Connexion" name="connexion">
-        </form>
-    </div>
+<form action="clientAuth.php" method="post">
+        <div id="auth">
+            <h1>Connexion</h1>
+            <input type="text" name="login" id="login" placeholder="Entrez votre identifiant"><br/>
+            <input type="password" name="mdp" id="mdp" placeholder="Entrez votre mot de passe"><br/>
+            <input type="submit" id="submit" value="Connexion" name="connexion">
+        </div>
+    </form>
 </body>
 </html>
