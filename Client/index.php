@@ -27,11 +27,12 @@
             <?php
                 session_start();
                 if (isset($_SESSION["pseudo"])){
-                    echo "<p id='pseudo'>" . $_SESSION["pseudo"] . "</p>";
+                    echo "<p id='pseudo'>" . $_SESSION["pseudo"] . "</p>
+                    <button id='deconnexion' onclick='deconnexion();' name='deconnexion'>Déconnexion</button>";
+                } else {
+                    echo "<button onclick=\"window.location.href='authentification.php'\" id=\"connexion\">Connexion</button>";
                 }
             ?>
-            <button onclick="window.location.href='authentification.php'" id="connexion">Connexion</button>
-            <button id="deconnexion" onclick="deconnexion();" name="deconnexion">Déconnexion</button>
         </div>
     </div>
 
