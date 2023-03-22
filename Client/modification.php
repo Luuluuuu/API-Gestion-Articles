@@ -18,7 +18,7 @@
 
             if (isset($_GET['modifier'])) {
 
-                header("Location:client.php");
+                header("Location:index.php");
             
                 $entree = $_GET['entree'];
 

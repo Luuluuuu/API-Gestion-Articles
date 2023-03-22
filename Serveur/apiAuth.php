@@ -29,7 +29,7 @@
 
             // Si aucun login ou aucun mdp ne sont renseignés
             if (empty($postedData["login"]) || empty($postedData["mdp"])){
-                deliver_response(400, "Veuillez renseigner votre login (login) et votre mot de passe (mdp)", null);
+                deliver_response(400, "Veuillez renseigner votre login et votre mot de passe.", null);
 
             } else {
                 // Récupération des données saisies
