@@ -1,18 +1,9 @@
 <?php
-    // ERREUR
-        // V 405 : Cas par default : La méthode demandée n'est pas connue.
-        // 404 : Cette ressource n'existe pas.
-        // 400 : La syntaxe n'est pas correcte.
-    // Problèmes :
-        // V - DELETE ne devrait pas être par défaut 
-        // V Gestion des erreurs 
-        // POST & PUT doivent retourner la ressource entière
-        // V PUT : l'id devrait être dans l'URL
-
     /// Paramétrage de l'entête HTTP (pour la réponse au Client)
+    session_start();
     header("Content-Type:application/json");
 
-    //
+    // IMPORTS 
     require_once("jwt_utils.php");    
     require_once("connexionBDD.php");
 
@@ -67,7 +58,8 @@
 
             if (!empty($postedData["contenu"])){
                 // Traitement
-                $pseudo = $_SESSION["pseudo"];
+                $pseudo = $postedData["pseudo"];
+                echo $pseudo;
                 $reqPseudo = "SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?";             
                 $resPseudo = $linkpdo->prepare($reqPseudo);
                 $resPseudo->execute(array($pseudo));

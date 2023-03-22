@@ -7,9 +7,19 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Articles</title>
 
-    <style>
-
-    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>
+        function deconnexion() {
+            $.ajax({
+            url: "deconnexion.php",
+            data: {},
+            type: "get",
+            success: function(msg){
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
 </head>
 <body>
     <div id="header">
@@ -21,23 +31,22 @@
                 }
             ?>
             <button onclick="window.location.href='authentification.php'" id="connexion">Connexion</button>
-            <button onclick="<?php
-                session_destroy();
-                echo "window.location.href='index.php'";
-            ?>" id="deconnexion">Déconnexion</button>
+            <button id="deconnexion" onclick="deconnexion();" name="deconnexion">Déconnexion</button>
         </div>
     </div>
 
     <div id="body">
-        <form action="publication.php" method="get">
-            <label for="contenu">Ecrivez votre article : </label>
-            <input type="textarea" name="contenu" id="contenu">
-            <input type="submit" value="Ajouter" name="ajouter">
-        </form>
-
+        <?php
+            if (isset($_SESSION["pseudo"])){
+                echo '<form action="publication.php" method="get">
+                    <label for="contenu">Ecrivez votre article : </label>
+                    <input type="textarea" name="contenu" id="contenu">
+                    <input type="submit" value="Ajouter" name="ajouter">
+                </form>';
+            }
+        ?>
         <div>
             <?php
-                session_start();
                 $result = file_get_contents(
                     'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
                     false,
