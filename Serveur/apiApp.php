@@ -138,13 +138,12 @@
             /// Récupération de l'identifiant de la ressource envoyé par le Client
             if (!empty($_GET['id'])){
                 /// Traitement
-                $res = $linkpdo->prepare("DELETE FROM ChuckN_Facts WHERE id = ?");
+                $res = $linkpdo->prepare("DELETE FROM Article WHERE idArticle = ?");
                 $res->execute(array($_GET['id']));
 
                 /// Envoi de la réponse au Client
                 deliver_response(200, "Reponse de la requete DELETE", NULL);
             } else{
-                // Erreur de syntaxe
                 deliver_response(400, 
                     "Erreur de syntaxe : veuillez spécifier l'identifiant de la ressource dans l'URL.", 
                     NULL);
