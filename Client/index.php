@@ -15,7 +15,7 @@
             <button onclick="<?php
             session_start();
             session_destroy();
-            echo 'window.location.href=\'index.php\'';
+            echo 'window.location.href=\'authentification.php\'';
             ?>" id="deconnexion">Déconnexion</button>
         </div>
     </div>
