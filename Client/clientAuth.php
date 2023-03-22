@@ -31,7 +31,7 @@
             );
             $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
             $_SESSION["token"] = $result["data"];
-            header("Location:client.php");
+            header("Location:index.php");
         } catch (\JsonException $exception) {
             if (strpos($http_response_header[0], "404")){
                 echo explode("404 ", $http_response_header[0])[1];
