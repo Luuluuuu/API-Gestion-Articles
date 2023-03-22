@@ -11,12 +11,12 @@
     <div id="header">
         <div>
             <p id="pseudo">Pseudo</p> 
-            <button onclick="window.location.href='authentification.php'">Connexion</button>
+            <button onclick="window.location.href='authentification.php'" id="connexion">Connexion</button>
             <button onclick="<?php
             session_start();
             session_destroy();
             echo 'window.location.href=\'index.php\'';
-            ?>">Déconnexion</button>
+            ?>" id="deconnexion">Déconnexion</button>
         </div>
     </div>
 
@@ -38,12 +38,17 @@
 
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
                 foreach ($result['data'] as $row) {
-                    echo "<div class='article'>" . $row['Auteur']
+                    echo "<div class='article'>"
+                    . "<div class='contenu'>"
+                    . $row['Auteur'] . "<br/>"
+                    . $row['Contenu'] . "<br/>"
+                    . $row['Like']  . $row['Dislike'] . $row['DatePublication']
+                    ."</div>"
+                    . "<div class='boutons'>"
                     . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
                     . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                    . $row['Contenu'] . "<br/>"
-                    . $row['Like']  . $row['Dislike'] . $row['DatePublication'] .
-                    "</div>";
+                    ."</div>"
+                    ."</div>";
                 }
             ?>
         </div>

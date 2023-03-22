@@ -123,10 +123,16 @@ button {
     border: none;
     font-size: medium;
     padding: 0 5px;
+    margin: 0 10px;
 }
 
-button:hover {
+#deconnexion:hover {
     background-color: red;
+    color : white;
+}
+
+#connexion:hover {
+    background-color: greenyellow;
     color : white;
 }
 
