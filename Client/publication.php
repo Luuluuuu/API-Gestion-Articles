@@ -1,6 +1,6 @@
 <?php
 
-    header("Location:client.php");
+    header("Location:index.php");
 
     if (isset($_GET['ajouter'])) {
         $contenu = $_GET['contenu'];

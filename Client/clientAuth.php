@@ -34,9 +34,11 @@
             header("Location:index.php");
         } catch (\JsonException $exception) {
             if (strpos($http_response_header[0], "404")){
-                echo explode("404 ", $http_response_header[0])[1];
+                $erreur = explode("404 ", $http_response_header[0])[1];
+                header("Location:authentification.php?erreur=$erreur");
              } else if (strpos($http_response_header[0], "400")) {
-                echo explode("400 ", $http_response_header[0])[1];
+                $erreur = explode("400 ", $http_response_header[0])[1];
+                header("Location:authentification.php?erreur=$erreur");
              }
         }      
     }
