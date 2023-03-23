@@ -141,16 +141,27 @@ button {
     color: white;
 }
 
-.btn-like .icon-like {
+.like-dislike {
+    display: flex;
+}
+
+.icon {
     height: 100px;
     width: 100px;
-    background: url('img/heart.png');
     background-position: left;
     cursor: pointer;
     position: absolute;
 }
 
-.btn-like .icon-like.liked {
+.btn-like .icon-like {
+    background: url('img/heart.png');
+}
+
+.btn-dislike .icon-dislike {
+    background: url('img/dislike.png');
+}
+
+.btn-like .icon-like.liked, .btn-dislike .icon-dislike.liked {
     animation: like-anim 0.7s steps(28) forwards;
 }
 
@@ -160,13 +171,7 @@ button {
     }
 }
 
-@keyframes like-anim {
-    to {
-        background-position: right;
-    }
-}
-
-.btn-like .icon-like-bg {
+.btn-like .icon-like-bg, .btn-dislike .icon-dislike-bg {
     background: rgba(255, 192, 200, 0);
     border-radius: 50%;
     height: 60px;
@@ -181,7 +186,11 @@ button {
     background: rgba(255, 192, 200, 0.7);
 }
 
-.btn-like {
+.btn-dislike .icon-dislike-bg:hover {
+    background: rgba(200, 192, 255, 0.4);
+}
+
+.btn-like, .btn-dislike {
     display: flex;
     align-items: center;
 }
