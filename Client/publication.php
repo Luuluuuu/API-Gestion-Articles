@@ -1,11 +1,12 @@
 <?php
-
+    session_start();
     header("Location:index.php");
 
     if (isset($_GET['ajouter'])) {
         $contenu = $_GET['contenu'];
 
-        $data = array("contenu" => $contenu);
+        $data = array( "pseudo" => $_SESSION["pseudo"], 
+                        "contenu" => $contenu);
         $data_string = json_encode($data);
         /// Envoi de la requête
         $result = file_get_contents(

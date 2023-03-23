@@ -7,9 +7,20 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Articles</title>
 
-    <style>
-
-    </style>
+    <!-- Import du Script -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script>
+        function deconnexion() {
+            $.ajax({
+                url: "deconnexion.php",
+                data: {},
+                type: "get",
+                success: function(msg){
+                        window.location.reload();
+                    }
+                })
+        }
+    </script>
 </head>
 <body>
     <div id="header">
@@ -17,28 +28,26 @@
             <?php
                 session_start();
                 if (isset($_SESSION["pseudo"])){
-                    echo "<p id='pseudo'>" . $_SESSION["pseudo"] . "</p>";
+                    echo "<p id='pseudo'>" . $_SESSION["pseudo"] . "</p>
+                    <button id='deconnexion' onclick='deconnexion();' name='deconnexion'>Déconnexion</button>";
+                } else {
+                    echo "<button onclick=\"window.location.href='authentification.php'\" id=\"connexion\">Connexion</button>";
                 }
             ?>
-            <button onclick="window.location.href='authentification.php'" id="connexion">Connexion</button>
-            <button onclick="<?php
-                session_destroy();
-                echo "window.location.href='index.php'";
-            ?>" id="deconnexion">Déconnexion</button>
         </div>
     </div>
 
     <div id="body">
         <?php
-        if (isset($_SESSION["role"])){
-            if ($_SESSION["role"] == "Publisher") {
-                echo "<form action=\"publication.php\" method=\"get\">
-                <label for=\"contenu\">Ecrivez votre article : </label>
-                <input type=\"textarea\" name=\"contenu\" id=\"contenu\">
-                <input type=\"submit\" value=\"Ajouter\" name=\"ajouter\">
-                </form>";
+            if (isset($_SESSION["role"])){
+                if ($_SESSION["role"] == "Publisher") {
+                    echo '<form action="publication.php" method="get">
+                        <label for="contenu">Ecrivez votre article : </label>
+                        <input type="textarea" name="contenu" id="contenu">
+                        <input type="submit" value="Ajouter" name="ajouter">
+                    </form>';
+                }
             }
-        }
         ?>
 
         <div>
@@ -93,5 +102,6 @@
             ?>
         </div>
     </div>
+
 </body>
 </html>
