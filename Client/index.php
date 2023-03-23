@@ -7,17 +7,18 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <title>Articles</title>
 
+    <!-- Import du Script -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
         function deconnexion() {
             $.ajax({
-            url: "deconnexion.php",
-            data: {},
-            type: "get",
-            success: function(msg){
-                    window.location.reload();
-                }
-            })
+                url: "deconnexion.php",
+                data: {},
+                type: "get",
+                success: function(msg){
+                        window.location.reload();
+                    }
+                })
         }
     </script>
 </head>
@@ -71,5 +72,6 @@
             ?>
         </div>
     </div>
+
 </body>
 </html>
