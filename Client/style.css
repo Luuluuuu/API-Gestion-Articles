@@ -140,3 +140,48 @@ button {
     font-size: large;
     color: white;
 }
+
+.btn-like .icon-like {
+    height: 100px;
+    width: 100px;
+    background: url('img/heart.png');
+    background-position: left;
+    cursor: pointer;
+    position: absolute;
+}
+
+.btn-like .icon-like.liked {
+    animation: like-anim 0.7s steps(28) forwards;
+}
+
+@keyframes like-anim {
+    to {
+        background-position: right;
+    }
+}
+
+@keyframes like-anim {
+    to {
+        background-position: right;
+    }
+}
+
+.btn-like .icon-like-bg {
+    background: rgba(255, 192, 200, 0);
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 100ms ease;
+}
+
+.btn-like .icon-like-bg:hover {
+    background: rgba(255, 192, 200, 0.7);
+}
+
+.btn-like {
+    display: flex;
+    align-items: center;
+}

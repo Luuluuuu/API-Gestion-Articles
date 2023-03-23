@@ -9,18 +9,6 @@
 
     <!-- Import du Script -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script>
-        function deconnexion() {
-            $.ajax({
-                url: "deconnexion.php",
-                data: {},
-                type: "get",
-                success: function(msg){
-                        window.location.reload();
-                    }
-                })
-        }
-    </script>
 </head>
 <body>
     <div id="header">
@@ -60,8 +48,15 @@
                     echo "<div class='article'>"
                     . "<div class='contenu'>"
                     . $row['Auteur'] . "<br/>"
-                    . $row['Contenu'] . "<br/>"
-                    . $row['Like']  . $row['Dislike'] . $row['DatePublication']
+                    . $row['Contenu'] . "<br/>
+                    <div class='btn-like'>
+                        <div class='icon-like-bg'>
+                            <div class='icon-like'></div>
+                        </div>
+                        <div class='nb-like'>" . $row['Like']  
+                    . "</div> 
+                    </div>" . 
+                    $row['Dislike'] . $row['DatePublication']
                     ."</div>"
                     . "<div class='boutons'>"
                     . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
@@ -72,6 +67,8 @@
             ?>
         </div>
     </div>
+
+    <script src="script.js"> </script>
 
 </body>
 </html>
