@@ -92,28 +92,27 @@
                 $postedData = file_get_contents('php://input');
                 $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
 
-                if (!empty($postedData["phrase"]) && !empty($postedData["vote"])
-                        && !empty($postedData["faute"]) && !empty($postedData["signalement"]) 
+                if (!empty($postedData["contenu"]) && !empty($postedData["pseudo"]) 
                         && !empty($postedData["id"])){
-                    // Traitement 
-                    $res = $linkpdo->prepare("UPDATE ChuckN_Facts 
-                    SET phrase = ?, 
-                    vote = ?,
-                    date_modif = NOW(),
-                    faute = ?,
-                    signalement = ?
-                    WHERE id = ?");
+                    // Récupération de l'ID Utilisateur à partir d'un pseudo
+                    $res = $linkpdo->prepare("SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?");
+                    $res->execute(array($postedData["pseudo"]));
+                    $idUtilisateur = $res->fetch(PDO::FETCH_ASSOC);
 
-                    $res->execute(array($postedData["phrase"],
-                    $postedData["vote"],
-                    $postedData["faute"],
-                    $postedData["signalement"],
+                    // Traitement 
+                    $res = $linkpdo->prepare("UPDATE Article 
+                    SET DatePublication = NOW(),
+                    Contenu = ?,
+                    IdUtilisateur = ?
+                    WHERE idArticle = ?");
+                    $res->execute(array($postedData["contenu"],
+                    $idUtilisateur["IdUtilisateur"],
                     $postedData["id"]));
-                    
+
                     // Affichage des données mis à jour
-                    $res = $linkpdo->prepare("SELECT * FROM Chuckn_Facts 
-                                        WHERE phrase IS NOT NULL 
-                                        AND id = " . $postedData["id"]);
+                    $res = $linkpdo->prepare("SELECT * FROM Article 
+                                        WHERE contenu IS NOT NULL 
+                                        AND idArticle = " . $postedData["id"]);
                     $res->execute();
                     $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
                     /// Envoi de la réponse au Client

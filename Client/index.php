@@ -27,14 +27,12 @@
 
     <div id="body">
         <?php
-            if (isset($_SESSION["role"])){
-                if ($_SESSION["role"] == "Publisher") {
-                    echo '<form action="publication.php" method="get">
+            if (isset($_SESSION["role"]) && $_SESSION["role"] == "Publisher") {
+                echo '<form action="publication.php" method="get">
                         <label for="contenu">Ecrivez votre article : </label>
                         <input type="textarea" name="contenu" id="contenu">
                         <input type="submit" value="Ajouter" name="ajouter">
                     </form>';
-                }
             }
         ?>
 
@@ -71,7 +69,8 @@
                                     . "</div>"
                                     . "<div class='boutons'>";
                         if ($_SESSION["role"] == "Publisher") {
-                            $ligne .= "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>";
+                            $ligne .= "<a href='modification.php?id=". $row['IdArticle'] 
+                                . "&contenu=" . $row['Contenu'] . "'>Modifier</a>";
                         }
                         $ligne .= "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
 

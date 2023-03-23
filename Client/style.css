@@ -141,6 +141,8 @@ button {
     color: white;
 }
 
+/* Boutons Like Dislike */
+
 .like-dislike {
     display: flex;
 }

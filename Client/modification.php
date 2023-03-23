@@ -9,26 +9,25 @@
     <body>
         <form action="modification.php" method="get">
             <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>">
-            <label for="entree">Texte à modifier : </label>
-            <input type="text" name="entree" id="entree">
+            <label for="contenu">Texte à modifier : </label>
+            <input type="text" name="contenu" value="<?php echo $_GET["contenu"]; ?>" id="contenu">
             <input type="submit" value="Modifier" name="modifier">
         </form>
 
         <?php
 
             if (isset($_GET['modifier'])) {
-
+                session_start();
                 header("Location:index.php");
-            
-                $entree = $_GET['entree'];
-
+                
+                $contenu = $_GET['contenu'];
                 ////////////////// Cas des méthodes POST et PUT //////////////////
                 /// Déclaration des données à envoyer au Serveur
-                $data = array("id" => $_GET["id"],"phrase" => $entree);
+                $data = array("id" => $_GET["id"],"contenu" => $contenu, "pseudo" => $_SESSION["pseudo"]);
                 $data_string = json_encode($data);
                 /// Envoi de la requête
                 $result = file_get_contents(
-                    'http://www.kilya.biz/api/chuckn_facts.php', // remplacer lien par le serveur
+                    'http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=' . $_GET["id"], 
                     false,
                     stream_context_create(array(
                         'http' => array(
