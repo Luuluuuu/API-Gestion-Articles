@@ -46,58 +46,30 @@
                     stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
                 );
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
+                foreach ($result['data'] as $row){
+                    $ligne = "<div class='article'>"
+                                . "<div class='contenu'>"
+                                . $row['Auteur'] . "<br/>"
+                                . $row['Contenu'] . "<br/>";
 
-                if (isset($_SESSION["role"])){
-                    if ($_SESSION["role"] == "Publisher") {
-                        foreach ($result['data'] as $row) {
-                            echo "<div class='article'>"
-                            . "<div class='contenu'>"
-                            . $row['Auteur'] . "<br/>"
-                            . $row['Contenu'] . "<br/>
-                            <div class='btn-like'>
-                                <div class='icon-like-bg'>
-                                    <div class='icon-like'></div>
-                                </div>
-                                <div class='nb-like'>" . $row['Like']  
-                            . "</div> 
-                            </div>" .  $row['Dislike'] . $row['DatePublication']
-                            ."</div>"
-                            . "<div class='boutons'>"
-                            . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
-                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                            ."</div>"
-                            ."</div>";
+                    if (isset($_SESSION["role"])){
+                        $ligne .= "<div class='btn-like'>
+                                    <div class='icon-like-bg'>
+                                        <div class='icon-like'></div>
+                                    </div>
+                                    <div class='nb-like'>" . $row['Like'] . "</div> </div>" 
+                                    . $row['Dislike'] . $row['DatePublication']
+                                    . "</div>"
+                                    . "<div class='boutons'>";
+                        if ($_SESSION["role"] == "Publisher") {
+                            $ligne .= "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>";
                         }
-                    } else if ($_SESSION["role"] == "Moderator") {
-                        foreach ($result['data'] as $row) {
-                            echo "<div class='article'>"
-                            . "<div class='contenu'>"
-                            . $row['Auteur'] . "<br/>"
-                            . $row['Contenu'] . "<br/>
-                            <div class='btn-like'>
-                                <div class='icon-like-bg'>
-                                    <div class='icon-like'></div>
-                                </div>
-                                <div class='nb-like'>" . $row['Like']  
-                            . "</div> 
-                            </div>" .  $row['Dislike'] . $row['DatePublication']
-                            ."</div>"
-                            . "<div class='boutons'>"
-                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                            ."</div>"
-                            ."</div>";
-                        }
+                        $ligne .= "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
+
+                    } else {
+                        $ligne .= $row['DatePublication'];
                     }
-                } else {
-                    foreach ($result['data'] as $row) {
-                        echo "<div class='article'>"
-                        . "<div class='contenu'>"
-                        . $row['Auteur'] . "<br/>"
-                        . $row['Contenu'] . "<br/>"
-                        . $row['DatePublication']
-                        ."</div>"
-                        ."</div>";
-                    }
+                    echo $ligne . "</div></div>";
                 }
             ?>
         </div>

@@ -7,6 +7,7 @@ for (let i = 0; i < iconLike.length; i++) {
     iconLike[i].classList.toggle("liked");
     if (iconLike[i].classList.contains("liked")){
         nbLike++;
+        
     } else {
         nbLike--;
     }
