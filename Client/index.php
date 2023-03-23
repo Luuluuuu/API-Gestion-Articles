@@ -27,14 +27,17 @@
 
     <div id="body">
         <?php
-            if (isset($_SESSION["pseudo"])){
-                echo '<form action="publication.php" method="get">
-                    <label for="contenu">Ecrivez votre article : </label>
-                    <input type="textarea" name="contenu" id="contenu">
-                    <input type="submit" value="Ajouter" name="ajouter">
-                </form>';
+            if (isset($_SESSION["role"])){
+                if ($_SESSION["role"] == "Publisher") {
+                    echo '<form action="publication.php" method="get">
+                        <label for="contenu">Ecrivez votre article : </label>
+                        <input type="textarea" name="contenu" id="contenu">
+                        <input type="submit" value="Ajouter" name="ajouter">
+                    </form>';
+                }
             }
         ?>
+
         <div>
             <?php
                 $result = file_get_contents(
@@ -42,27 +45,59 @@
                     false,
                     stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
                 );
-
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-                foreach ($result['data'] as $row) {
-                    echo "<div class='article'>"
-                    . "<div class='contenu'>"
-                    . $row['Auteur'] . "<br/>"
-                    . $row['Contenu'] . "<br/>
-                    <div class='btn-like'>
-                        <div class='icon-like-bg'>
-                            <div class='icon-like'></div>
-                        </div>
-                        <div class='nb-like'>" . $row['Like']  
-                    . "</div> 
-                    </div>" . 
-                    $row['Dislike'] . $row['DatePublication']
-                    ."</div>"
-                    . "<div class='boutons'>"
-                    . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
-                    . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                    ."</div>"
-                    ."</div>";
+
+                if (isset($_SESSION["role"])){
+                    if ($_SESSION["role"] == "Publisher") {
+                        foreach ($result['data'] as $row) {
+                            echo "<div class='article'>"
+                            . "<div class='contenu'>"
+                            . $row['Auteur'] . "<br/>"
+                            . $row['Contenu'] . "<br/>
+                            <div class='btn-like'>
+                                <div class='icon-like-bg'>
+                                    <div class='icon-like'></div>
+                                </div>
+                                <div class='nb-like'>" . $row['Like']  
+                            . "</div> 
+                            </div>" .  $row['Dislike'] . $row['DatePublication']
+                            ."</div>"
+                            . "<div class='boutons'>"
+                            . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
+                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
+                            ."</div>"
+                            ."</div>";
+                        }
+                    } else if ($_SESSION["role"] == "Moderator") {
+                        foreach ($result['data'] as $row) {
+                            echo "<div class='article'>"
+                            . "<div class='contenu'>"
+                            . $row['Auteur'] . "<br/>"
+                            . $row['Contenu'] . "<br/>
+                            <div class='btn-like'>
+                                <div class='icon-like-bg'>
+                                    <div class='icon-like'></div>
+                                </div>
+                                <div class='nb-like'>" . $row['Like']  
+                            . "</div> 
+                            </div>" .  $row['Dislike'] . $row['DatePublication']
+                            ."</div>"
+                            . "<div class='boutons'>"
+                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
+                            ."</div>"
+                            ."</div>";
+                        }
+                    }
+                } else {
+                    foreach ($result['data'] as $row) {
+                        echo "<div class='article'>"
+                        . "<div class='contenu'>"
+                        . $row['Auteur'] . "<br/>"
+                        . $row['Contenu'] . "<br/>"
+                        . $row['DatePublication']
+                        ."</div>"
+                        ."</div>";
+                    }
                 }
             ?>
         </div>
