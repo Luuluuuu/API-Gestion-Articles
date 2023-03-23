@@ -29,34 +29,66 @@
     </div>
 
     <div id="body">
-        <form action="publication.php" method="get">
-            <label for="contenu">Ecrivez votre article : </label>
-            <input type="textarea" name="contenu" id="contenu">
-            <input type="submit" value="Ajouter" name="ajouter">
-        </form>
+        <?php
+        if (isset($_SESSION["role"])){
+            if ($_SESSION["role"] == "Publisher") {
+                echo "<form action=\"publication.php\" method=\"get\">
+                <label for=\"contenu\">Ecrivez votre article : </label>
+                <input type=\"textarea\" name=\"contenu\" id=\"contenu\">
+                <input type=\"submit\" value=\"Ajouter\" name=\"ajouter\">
+                </form>";
+            }
+        }
+        ?>
 
         <div>
             <?php
-                session_start();
                 $result = file_get_contents(
                     'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
                     false,
                     stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
                 );
-
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-                foreach ($result['data'] as $row) {
-                    echo "<div class='article'>"
-                    . "<div class='contenu'>"
-                    . $row['Auteur'] . "<br/>"
-                    . $row['Contenu'] . "<br/>"
-                    . $row['Like']  . $row['Dislike'] . $row['DatePublication']
-                    ."</div>"
-                    . "<div class='boutons'>"
-                    . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
-                    . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
-                    ."</div>"
-                    ."</div>";
+
+                if (isset($_SESSION["role"])){
+                    if ($_SESSION["role"] == "Publisher") {
+                        foreach ($result['data'] as $row) {
+                            echo "<div class='article'>"
+                            . "<div class='contenu'>"
+                            . $row['Auteur'] . "<br/>"
+                            . $row['Contenu'] . "<br/>"
+                            . $row['Like']  . $row['Dislike'] . $row['DatePublication']
+                            ."</div>"
+                            . "<div class='boutons'>"
+                            . "<a href='modification.php?id=". $row['IdArticle']. "'>Modifier</a>"
+                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
+                            ."</div>"
+                            ."</div>";
+                        }
+                    } else if ($_SESSION["role"] == "Moderator") {
+                        foreach ($result['data'] as $row) {
+                            echo "<div class='article'>"
+                            . "<div class='contenu'>"
+                            . $row['Auteur'] . "<br/>"
+                            . $row['Contenu'] . "<br/>"
+                            . $row['Like']  . $row['Dislike'] . $row['DatePublication']
+                            ."</div>"
+                            . "<div class='boutons'>"
+                            . "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>"
+                            ."</div>"
+                            ."</div>";
+                        }
+                    }
+                } else {
+                    foreach ($result['data'] as $row) {
+                        echo "<div class='article'>"
+                        . "<div class='contenu'>"
+                        . $row['Auteur'] . "<br/>"
+                        . $row['Contenu'] . "<br/>"
+                        . $row['DatePublication']
+                        ."</div>"
+                        ."</div>";
+                    }
                 }
             ?>
         </div>

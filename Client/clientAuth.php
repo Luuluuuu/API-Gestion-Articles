@@ -31,6 +31,7 @@
             $payload = explode(".",$result["data"]); // Explosion du token
             $payloadDecode = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR); // Récupération du tableau de données
             $_SESSION["pseudo"] = $payloadDecode["username"]; // Création de la session
+            $_SESSION["role"] = $payloadDecode["roleUtilisateur"];
 
             header("Location:index.php");
         } catch (\JsonException $exception) {
