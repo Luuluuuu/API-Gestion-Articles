@@ -68,11 +68,12 @@
                                     . $row['DatePublication']
                                     . "</div>"
                                     . "<div class='boutons'>";
-                        if ($_SESSION["role"] == "Publisher") {
+                        if (($_SESSION["role"] == "Publisher") && ($_SESSION["pseudo"] == $row['Auteur'])) {
                             $ligne .= "<a href='modification.php?id=". $row['IdArticle'] 
-                                . "&contenu=" . $row['Contenu'] . "'>Modifier</a>";
+                                . "&contenu=" . $row['Contenu'] . "'>Modifier</a><a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
+                        } else if ($_SESSION["role"] == "Moderator") {
+                            $ligne .= "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
                         }
-                        $ligne .= "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
 
                     } else {
                         $ligne .= $row['DatePublication'];
