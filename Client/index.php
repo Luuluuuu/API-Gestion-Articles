@@ -46,39 +46,50 @@
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
                 foreach ($result['data'] as $row){
                     $ligne = "<div class='article'>"
-                                . "<div class='contenu'>"
-                                . $row['Auteur'] . "<br/>"
+                                . "<div class='contenu'><b>"
+                                . $row['Auteur'] . "</b> ("
+                                . $row['DatePublication'] . ") <br/>"
                                 . $row['Contenu'] . "<br/>";
 
                     if (isset($_SESSION["role"])){
-                        $ligne .= "<div class='like-dislike'>
-                                        <div class='btn-like'>
-                                            <div class='icon-like-bg'>
-                                                <div class='icon icon-like'></div>
+                        if ($_SESSION["role"] == "Publisher") {
+                            $ligne .= "<div class='like-dislike'>
+                                            <div class='btn-like'>
+                                                <div class='icon-like-bg'>
+                                                    <div class='icon icon-like'></div>
+                                                </div>
+                                                <div class='nb-like'>" . $row['Like'] . "</div>
                                             </div>
-                                            <div class='nb-like'>" . $row['Like'] . "</div>
-                                        </div>
-                                        <div class='btn-dislike'>
-                                            <div class='icon-dislike-bg'>
-                                                <div class='icon icon-dislike'></div>
+                                            <div class='btn-dislike'>
+                                                <div class='icon-dislike-bg'>
+                                                    <div class='icon icon-dislike'></div>
+                                                </div>
+                                                <div class='nb-dislike'>" . $row['Dislike'] . "</div>
                                             </div>
-                                            <div class='nb-dislike'>" . $row['Dislike'] . "</div>
-                                        </div>
-                                    </div>"
-                                    . $row['DatePublication']
-                                    . "</div>"
-                                    . "<div class='boutons'>";
-                        if (($_SESSION["role"] == "Publisher") && ($_SESSION["pseudo"] == $row['Auteur'])) {
-                            $ligne .= "<a href='modification.php?id=". $row['IdArticle'] 
-                                . "&contenu=" . $row['Contenu'] . "'>Modifier</a><a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
+                                        </div>"
+                                        . "</div>";
                         } else if ($_SESSION["role"] == "Moderator") {
-                            $ligne .= "<a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/>";
+                            $ligne .= "<div class='like-dislike'>
+                                            <div class='btn-like'>
+                                                <p>Nombre de likes : </p>"
+                                                . $row['Like'] .
+                                            "</div>
+                                            <div class='btn-dislike'>
+                                                <p>Nombre de dislikes : </p>"
+                                                . $row['Dislike'] .
+                                            "</div>
+                                        </div>"
+                                        . "</div>"
+                                        . "<div class='boutons'><a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/></div>";
                         }
-
+                        if (($_SESSION["role"] == "Publisher") && ($_SESSION["pseudo"] == $row['Auteur'])) {
+                            $ligne .= "<div class='boutons'><a href='modification.php?id=". $row['IdArticle'] 
+                            . "&contenu=" . $row['Contenu'] . "'>Modifier</a><a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/></div>";
+                        }
                     } else {
-                        $ligne .= $row['DatePublication'];
+                        $ligne .= "</div>";
                     }
-                    echo $ligne . "</div></div>";
+                    echo $ligne . "</div>";
                 }
             ?>
         </div>
