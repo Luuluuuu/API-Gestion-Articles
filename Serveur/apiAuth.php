@@ -42,12 +42,16 @@
                 } else {
 
                     //Récupération du rôle
-                    $res3 = $linkpdo->prepare("SELECT RoleU FROM utilisateur WHERE NomUtilisateur = ? AND MotDePasse = ?");
+                    $res3 = $linkpdo->prepare("SELECT RoleU, IdUtilisateur
+                                                FROM utilisateur 
+                                                WHERE NomUtilisateur = ? 
+                                                AND MotDePasse = ?");
                     $res3->execute(array($login, $pwd));
                     $row = $res3->fetch(PDO::FETCH_ASSOC);
 
                     $headers = array("alg"=>"HS256", "typ"=>"JWT");
-                    $payload = array("username"=>$login, 
+                    $payload = array("id"=>$row['IdUtilisateur'],
+                                "username"=>$login, 
                                 "roleUtilisateur"=>$row['RoleU'],
                                 "exp"=>(time() + 86400));
 

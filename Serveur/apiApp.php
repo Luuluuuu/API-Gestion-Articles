@@ -13,7 +13,9 @@
         $bearer_token = get_bearer_token();
         if (is_jwt_valid($bearer_token)){
             $payload = explode(".", $bearer_token); // Explosion du token
-            $role = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR)["roleUtilisateur"];
+            $payloadDecode = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR);
+            $role = $payloadDecode["roleUtilisateur"];
+            $idUtilisateur = $payloadDecode["id"];
         } else {
             deliver_response(401, "Authentification Error", NULL);
 
@@ -172,16 +174,36 @@
         case "DELETE" :
             // Récupération de l'identifiant de la ressource envoyé par le Client
             if (!empty($_GET['id'])){
-                // Suppression de l'article
-                $res = $linkpdo->prepare("DELETE FROM Article WHERE idArticle = ?");
-                $res->execute(array($_GET['id']));
+                if (!empty($role)){
+                    // On récupère l'utilisateur de l'article
+                    switch ($role){
+                        case "Publisher":
+                            $res = $linkpdo->prepare("SELECT IdUtilisateur FROM Article WHERE IdArticle = ?");
+                            $res->execute(array($_GET['id']));
+                            if ($res->rowCount()>0){
+                                $colonneID = $res->fetch(PDO::FETCH_ASSOC);
+                                $idUtilisateurArticle = $colonneID["IdUtilisateur"];
+                                if ($idUtilisateur == $idUtilisateurArticle){
+                                    // Suppression de l'article
+                                    $res = $linkpdo->prepare("DELETE FROM Article WHERE idArticle = ?");
+                                    $res->execute(array($_GET['id']));
+                                    // Envoi de la réponse au Client
+                                    deliver_response(200, "Statut : OK", NULL);
 
-                // Envoi de la réponse au Client
-                deliver_response(200, "Status: OK", NULL);
+                                } else {deliver_response(403, "Erreur d'autorisation", NULL);}
+                            } else {deliver_response(404, "Erreur de syntaxe : Article introuvable", NULL);}
+                            break;
+                        case "Moderator":
+                            // Suppression de l'article
+                            $res = $linkpdo->prepare("DELETE FROM Article WHERE idArticle = ?");
+                            $res->execute(array($_GET['id']));
+                            // Envoi de la réponse au Client
+                            deliver_response(200, "Statut : OK", NULL);
+                            break;
+                    }
+                }  else {deliver_response(403, "Erreur d'autorisation", NULL);}                
             } else{
-                deliver_response(400, 
-                    "Erreur de syntaxe : veuillez spécifier l'identifiant de la ressource dans l'URL.", 
-                    NULL);
+                deliver_response(400, "Erreur de syntaxe : ID de l'article introuvable", NULL);
             }
             break;
         default:
