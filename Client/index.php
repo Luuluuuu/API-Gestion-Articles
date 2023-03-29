@@ -38,11 +38,23 @@
 
         <div>
             <?php
-                $result = file_get_contents(
-                    'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
-                    false,
-                    stream_context_create(array('http' => array('method' => 'GET'))) // ou DELETE
-                );
+                if (isset($_SESSION["token"])){
+                    $result = file_get_contents(
+                        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
+                        false,
+                        stream_context_create(array('http' => 
+                                            array('method' => 'GET',
+                                            'header' => array('Authorization: Bearer ' . $_SESSION["token"] . "\r\n")))) 
+                    );
+                } else {
+                    $result = file_get_contents(
+                        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
+                        false,
+                        stream_context_create(array('http' =>array('method' => 'GET'))) 
+                    );
+
+                }
+
                 $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
                 foreach ($result['data'] as $row){
                     $ligne = "<div class='article'>"

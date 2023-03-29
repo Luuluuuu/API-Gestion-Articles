@@ -27,8 +27,8 @@
                 ))
             );
             // Récupération du résultat
-            $result = json_decode($result, true, 512, JSON_THROW_ON_ERROR);
-            $payload = explode(".",$result["data"]); // Explosion du token
+            $_SESSION["token"] = json_decode($result, true, 512, JSON_THROW_ON_ERROR)["data"];
+            $payload = explode(".", $_SESSION["token"] ); // Explosion du token
             $payloadDecode = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR); // Récupération du tableau de données
             $_SESSION["pseudo"] = $payloadDecode["username"]; // Création de la session
             $_SESSION["role"] = $payloadDecode["roleUtilisateur"];

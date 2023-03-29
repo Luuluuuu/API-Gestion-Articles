@@ -2,27 +2,15 @@
 
     header("Content-Type:application/json");
     require_once("jwt_utils.php");
+    require_once("connexionBDD.php");
 
-    // Connexion à la BDD
-    $server = "127.0.0.1"; 
-    $db = "api_gestion";
-    $login = "root";
-    $mdp = "";
-    try{
-        $linkpdo = new PDO("mysql:host=$server;dbname=$db;charset=UTF8",$login,$mdp);
-    } catch (Exception $e){
-        die('Erreur : '.$e->getMessage());
-    }
-
-    // Tableau d'identifiants (login=>pwd)
-    //$identifiants = array("test"=>"azerty");
+    $linkpdo = connexion();
 
     /// Identification du type de méthode HTTP envoyée par le client
     $http_method = $_SERVER['REQUEST_METHOD'];
     switch ($http_method){
         /// Cas de la méthode POST
         case "POST" :
-
             // Récupère les données entrées par le Client
             $postedData = file_get_contents('php://input');
             $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
@@ -59,7 +47,9 @@
                     $row = $res3->fetch(PDO::FETCH_ASSOC);
 
                     $headers = array("alg"=>"HS256", "typ"=>"JWT");
-                    $payload = array("username"=>$login, "roleUtilisateur"=>$row['RoleU'], "exp"=>(time() + 360));
+                    $payload = array("username"=>$login, 
+                                "roleUtilisateur"=>$row['RoleU'],
+                                "exp"=>(time() + 86400));
 
                     $jwt = generate_jwt($headers, $payload);
                     deliver_response(200, "OK", $jwt);
