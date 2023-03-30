@@ -84,14 +84,22 @@
                             $ligne .= "<div class='like-dislike'>
                                             <div class='btn-like'>
                                                 <p>Nombre de likes : </p>"
-                                                . $row['Like'] .
+                                                . $row['Like'] . 
                                             "</div>
                                             <div class='btn-dislike'>
                                                 <p>Nombre de dislikes : </p>"
                                                 . $row['Dislike'] .
                                             "</div>
+                                        </div>
+                                        <div class='like-dislike'>
+                                            <div class='btn-like like'>"
+                                                . implode($row['Utlisateurs ayant like'], "<br/>") .
+                                            "</div>
+                                            <div class='btn-dislike dislike'>"
+                                                . implode($row['Utlisateurs ayant dislike'], "<br/>") .
+                                            "</div>
+                                        </div>
                                         </div>"
-                                        . "</div>"
                                         . "<div class='boutons'><a href='suppression.php?id=". $row['IdArticle']. "'>Supprimer</a> <br/></div>";
                         }
                         if (($_SESSION["role"] == "Publisher") && ($_SESSION["pseudo"] == $row['Auteur'])) {

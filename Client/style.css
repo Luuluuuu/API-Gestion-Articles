@@ -198,3 +198,8 @@ button {
     display: flex;
     align-items: center;
 }
+
+.like, .dislike {
+    background-color: RGB(131, 40, 144);
+    color: white;
+}
