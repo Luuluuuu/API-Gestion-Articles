@@ -1,6 +1,6 @@
-<Limit GET POST PUT DELETE OPTIONS>
+<Limit GET POST PUT DELETE PATCH OPTIONS>
 Require all granted
 </Limit>
-<LimitExcept GET POST PUT DELETE OPTIONS>
+<LimitExcept GET POST PUT DELETE PATCH OPTIONS>
 Require all denied
 </LimitExcept>

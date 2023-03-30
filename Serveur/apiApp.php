@@ -128,7 +128,7 @@
                         if ($res->rowCount()>0){
                             $colonneID = $res->fetch(PDO::FETCH_ASSOC);
                             $idUtilisateurArticle = $colonneID["IdUtilisateur"];
-                            
+
                             if ($idUtilisateur == $idUtilisateurArticle){
                                 // Traitement 
                                 $res = $linkpdo->prepare("UPDATE Article 
@@ -187,6 +187,51 @@
                     }
                 }  else {deliver_response(403, "Erreur d'autorisation", NULL);}
             } else{deliver_response(404, "Erreur de syntaxe : ID de l'article introuvable dans l'URL", NULL);}
+            break;
+        case "PATCH":
+            if (!empty($role) && $role == "Publisher"){
+                /// Récupération des données envoyées par le Client
+                $postedData = file_get_contents('php://input');
+                $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
+
+                if (!empty($_GET["id"] && !empty($postedData["id"]))){
+                    $res = $linkpdo->prepare("SELECT * FROM Manipuler WHERE IdArticle = ? AND IdUtilisateur = ?");
+                    $res->execute(array($postedData["id"], $idUtilisateur));
+                    if ($res->rowCount()>0){ // Si l'utilisateur a déjà like ou dislike
+                        if (!empty($postedData["ALike"])){
+                            $res = $linkpdo->prepare("UPDATE Manipuler
+                                                        SET ALike = 1, ADislike = 0
+                                                        WHERE IdArticle = ? AND IdUtilisateur = ?");
+
+                        } else if (!empty($postedData["ADislike"])){
+                            $res = $linkpdo->prepare("UPDATE Manipuler
+                                                        SET ADislike = 1, ALike = 0
+                                                        WHERE IdArticle = ? AND IdUtilisateur = ?");
+
+                        } else {deliver_response(404, "Erreur de syntaxe : like ou dislike introuvable", NULL);}
+                    } else { // Sinon
+                        if (!empty($postedData["ALike"])){
+                            $res = $linkpdo->prepare("INSERT INTO Manipuler(IdArticle, IdUtilisateur, ALike, ADislike)  
+                                                        VALUES (?,?,1,0)");
+
+                        } else if (!empty($postedData["ADislike"])){
+                            $res = $linkpdo->prepare("INSERT INTO Manipuler(IdArticle, IdUtilisateur, ALike, ADislike) 
+                                                        VALUES (?,?,0,1)");
+
+                        } else {deliver_response(404, "Erreur de syntaxe : like ou dislike introuvable", NULL);}
+                    }
+                    
+                    if (!empty($res)){ // Si la requête a été créée
+                        $res->execute(array($postedData["id"], $idUtilisateur)); // Exécution de la requête
+                        // Affichage des données mises à jour
+                        $res = $linkpdo->prepare("SELECT * FROM Manipuler WHERE IdArticle = ? AND IdUtilisateur = ?");
+                        $res->execute(array($postedData["id"], $idUtilisateur));
+                        $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
+                        /// Envoi de la réponse au Client
+                        deliver_response(200, "Status: OK", $matchingData);
+                    }
+                } else {deliver_response(404, "Erreur de syntaxe : l'ID introuvable dans l'URL ou le body", NULL);}
+            } else {deliver_response(403, "Erreur d'autorisation", NULL);}
             break;
         default:
             // Gestion des erreurs
