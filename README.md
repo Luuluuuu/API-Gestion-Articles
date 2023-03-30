@@ -1,6 +1,6 @@
 # API-Gestion-Articles
 
-Connexion à la base de données
+## Connexion à la base de données
 
 Toutes les informations de connexion à la base de données sont contenues dans le fichier connexionBDD.php dans le dossier Serveur de l'application. Les paramètres par défaut sont : 
         $server = "127.0.0.1";; 
@@ -8,15 +8,15 @@ Toutes les informations de connexion à la base de données sont contenues dans 
         $login = "root";
         $mdp = "";
         
-Connexion à l'application
+## Connexion à l'application
 
 *En tant que moderator*
 
-Login -> Lulu / Mdp -> uwu
+Login -> Lulu / Mdp -> uwu  
          Thao          tuttut
          
 *En tant que publisher*
 
-Login -> Fantin / Mdp -> pwet
-         Mario           wihi
+Login -> Fantin / Mdp -> pwet  
+         Mario           wihi  
          Prof            travail
