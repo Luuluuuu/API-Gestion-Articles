@@ -198,31 +198,33 @@
                     $res = $linkpdo->prepare("SELECT * FROM Manipuler WHERE IdArticle = ? AND IdUtilisateur = ?");
                     $res->execute(array($postedData["id"], $idUtilisateur));
                     if ($res->rowCount()>0){ // Si l'utilisateur a déjà like ou dislike
-                        if (!empty($postedData["ALike"])){
+                        if (isset($postedData["ALike"])){
                             $res = $linkpdo->prepare("UPDATE Manipuler
-                                                        SET ALike = 1, ADislike = 0
+                                                        SET ALike = ?, ADislike = 0
                                                         WHERE IdArticle = ? AND IdUtilisateur = ?");
+                            $res->execute(array($postedData["ALike"], $postedData["id"], $idUtilisateur)); 
 
-                        } else if (!empty($postedData["ADislike"])){
+                        } else if (isset($postedData["ADislike"])){
                             $res = $linkpdo->prepare("UPDATE Manipuler
-                                                        SET ADislike = 1, ALike = 0
+                                                        SET ADislike = ?, ALike = 0
                                                         WHERE IdArticle = ? AND IdUtilisateur = ?");
+                            $res->execute(array($postedData["ADislike"], $postedData["id"], $idUtilisateur));
 
                         } else {deliver_response(404, "Erreur de syntaxe : like ou dislike introuvable", NULL);}
                     } else { // Sinon
                         if (!empty($postedData["ALike"])){
                             $res = $linkpdo->prepare("INSERT INTO Manipuler(IdArticle, IdUtilisateur, ALike, ADislike)  
                                                         VALUES (?,?,1,0)");
+                            $res->execute(array($postedData["id"], $idUtilisateur)); 
 
                         } else if (!empty($postedData["ADislike"])){
                             $res = $linkpdo->prepare("INSERT INTO Manipuler(IdArticle, IdUtilisateur, ALike, ADislike) 
                                                         VALUES (?,?,0,1)");
+                            $res->execute(array($postedData["id"], $idUtilisateur)); 
 
                         } else {deliver_response(404, "Erreur de syntaxe : like ou dislike introuvable", NULL);}
                     }
-                    
                     if (!empty($res)){ // Si la requête a été créée
-                        $res->execute(array($postedData["id"], $idUtilisateur)); // Exécution de la requête
                         // Affichage des données mises à jour
                         $res = $linkpdo->prepare("SELECT * FROM Manipuler WHERE IdArticle = ? AND IdUtilisateur = ?");
                         $res->execute(array($postedData["id"], $idUtilisateur));
