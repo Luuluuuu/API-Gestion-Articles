@@ -2,7 +2,8 @@
 
 ## Connexion à la base de données
 
-Toutes les informations de connexion à la base de données sont contenues dans le fichier connexionBDD.php dans le dossier Serveur de l'application. Les paramètres par défaut sont :  
+Toutes les informations de connexion à la base de données sont contenues dans le fichier Api-Gestion-Articles/Serveur/connexionBDD.php. 
+Les paramètres par défaut sont :  
         $server = "127.0.0.1";  
         $db = "api_gestion";  
         $login = "root";  
