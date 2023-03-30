@@ -120,33 +120,35 @@
                 $postedData = file_get_contents('php://input');
                 $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
 
-                if (!empty($postedData["contenu"]) && !empty($postedData["pseudo"]) 
-                        && !empty($postedData["id"])){
-                    // Récupération de l'ID Utilisateur à partir d'un pseudo
-                    $res = $linkpdo->prepare("SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?");
-                    $res->execute(array($postedData["pseudo"]));
-                    $idUtilisateur = $res->fetch(PDO::FETCH_ASSOC);
+                if (!empty($role) && $role == "Publisher"){
+                    if (!empty($postedData["contenu"]) && !empty($postedData["id"])){
+                        // Vérification de l'auteur de l'article à modifier
+                        $res = $linkpdo->prepare("SELECT IdUtilisateur FROM Article WHERE IdArticle = ?");
+                        $res->execute(array($postedData["id"]));
+                        if ($res->rowCount()>0){
+                            $colonneID = $res->fetch(PDO::FETCH_ASSOC);
+                            $idUtilisateurArticle = $colonneID["IdUtilisateur"];
+                            
+                            if ($idUtilisateur == $idUtilisateurArticle){
+                                // Traitement 
+                                $res = $linkpdo->prepare("UPDATE Article 
+                                SET DatePublication = NOW(), Contenu = ?, IdUtilisateur = ?
+                                WHERE idArticle = ?");
+                                $res->execute(array($postedData["contenu"],
+                                $idUtilisateur,
+                                $postedData["id"]));
+            
+                                // Affichage des données mises à jour
+                                $res = $linkpdo->prepare("SELECT * FROM Article WHERE IdArticle = ?");
+                                $res->execute(array($postedData["id"]));
+                                $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
+                                /// Envoi de la réponse au Client
+                                deliver_response(200, "Status: OK", $matchingData);
 
-                    // Traitement 
-                    $res = $linkpdo->prepare("UPDATE Article 
-                    SET DatePublication = NOW(),
-                    Contenu = ?,
-                    IdUtilisateur = ?
-                    WHERE idArticle = ?");
-                    $res->execute(array($postedData["contenu"],
-                    $idUtilisateur["IdUtilisateur"],
-                    $postedData["id"]));
-
-                    // Affichage des données mis à jour
-                    $res = $linkpdo->prepare("SELECT * FROM Article 
-                                        WHERE contenu IS NOT NULL 
-                                        AND idArticle = " . $postedData["id"]);
-                    $res->execute();
-                    $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
-
-                    /// Envoi de la réponse au Client
-                    deliver_response(200, "Status: OK", $matchingData);
-                } else {deliver_response(404,"Erreur de syntaxe : Contenu ou pseudo introuvables", $postedData);}
+                            } else {deliver_response(403, "Erreur d'autorisation", NULL);}
+                        } else {deliver_response(404, "Erreur de syntaxe : Article introuvable", NULL);}
+                    } else {deliver_response(404,"Erreur de syntaxe : Contenu ou id introuvables", $postedData);}
+                } else {deliver_response(403, "Erreur d'autorisation", NULL);}
             } else {deliver_response(404, "Erreur de syntaxe : ID introuvable dans l'URL",NULL);}
             break;
 
@@ -171,8 +173,10 @@
                                     deliver_response(200, "Statut : OK", NULL);
 
                                 } else {deliver_response(403, "Erreur d'autorisation", NULL);}
+
                             } else {deliver_response(404, "Erreur de syntaxe : Article introuvable", NULL);}
                             break;
+
                         case "Moderator":
                             // Suppression de l'article
                             $res = $linkpdo->prepare("DELETE FROM Article WHERE idArticle = ?");
@@ -181,10 +185,8 @@
                             deliver_response(200, "Statut : OK", NULL);
                             break;
                     }
-                }  else {deliver_response(403, "Erreur d'autorisation", NULL);}                
-            } else{
-                deliver_response(404, "Erreur de syntaxe : ID de l'article introuvable", NULL);
-            }
+                }  else {deliver_response(403, "Erreur d'autorisation", NULL);}
+            } else{deliver_response(404, "Erreur de syntaxe : ID de l'article introuvable dans l'URL", NULL);}
             break;
         default:
             // Gestion des erreurs
