@@ -5,8 +5,7 @@
     if (isset($_GET['ajouter'])) {
         $contenu = $_GET['contenu'];
 
-        $data = array( "pseudo" => $_SESSION["pseudo"], 
-                        "contenu" => $contenu);
+        $data = array("contenu" => $contenu);
         $data_string = json_encode($data);
         /// Envoi de la requête
         $result = file_get_contents(
@@ -19,6 +18,7 @@
                     'header' => array(
                         'Content-Type: application/json'."\r\n"
                         .'Content-Length: '.strlen($data_string)."\r\n"
+                        .'Authorization: Bearer ' . $_SESSION["token"] . "\r\n"
                     )
                 )
             ))

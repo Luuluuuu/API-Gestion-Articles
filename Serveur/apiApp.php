@@ -14,8 +14,9 @@
         if (is_jwt_valid($bearer_token)){
             $payload = explode(".", $bearer_token); // Explosion du token
             $payloadDecode = json_decode(base64_decode($payload[1]), true, 512, JSON_THROW_ON_ERROR);
-            $role = $payloadDecode["roleUtilisateur"];
+
             $idUtilisateur = $payloadDecode["id"];
+            $role = $payloadDecode["roleUtilisateur"];
         } else {
             deliver_response(401, "Authentification Error", NULL);
 
@@ -49,6 +50,7 @@
                 $res = $linkpdo->prepare($req);
                 $res->execute();
                 $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
+
                 if ($role == "Moderator"){
                     foreach ($matchingData as $key=>$values){
                         // Récupère les utilisateurs ayant like l'article
@@ -87,38 +89,27 @@
             
         /// Cas de la méthode POST
         case "POST" :
-            /// Récupération des données envoyées par le Client
-            $postedData = file_get_contents('php://input');
-            $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
+            if ($role=="Publisher"){
+                /// Récupération des données envoyées par le Client
+                $postedData = file_get_contents('php://input');
+                $postedData = json_decode($postedData, true, 512, JSON_THROW_ON_ERROR);
+                if (!empty($postedData["contenu"])){                    
+                    // Insertion du nouvel article
+                    $req = "INSERT INTO Article (Contenu, DatePublication, IdUtilisateur) VALUES (?, NOW() ,?)";
+                    $res = $linkpdo->prepare($req);
+                    $res->execute(array($postedData["contenu"], $idUtilisateur)); 
 
-            if (!empty($postedData["contenu"]) && !empty($postedData["pseudo"])){
-                // Traitement
-                $pseudo = $postedData["pseudo"]; // Récupération du pseudo de l'utilisateur
-                echo $pseudo;
-                // Récupération de l'id de l'utilisateur
-                $reqPseudo = "SELECT IdUtilisateur FROM Utilisateur WHERE NomUtilisateur = ?";             
-                $resPseudo = $linkpdo->prepare($reqPseudo);
-                $resPseudo->execute(array($pseudo));
-                
-                // Insertion du nouvel article
-                $req = "INSERT INTO Article (Contenu, DatePublication, IdUtilisateur) VALUES (?,NOW(),?)";
-                $res = $linkpdo->prepare($req);
-                $res->execute(array($postedData["contenu"], $resPseudo->fetch()[0])); 
-
-                // Affichage de la ressource insérée
-                $id = $linkpdo->lastInsertId();
-                $res = $linkpdo->prepare("SELECT * FROM Article 
-                                            WHERE phrase IS NOT NULL 
-                                            AND id = $id");
-                $res->execute();
-                $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
+                    // Affichage de la ressource insérée
+                    $res = $linkpdo->prepare("SELECT * FROM Article WHERE IdArticle = ?");
+                    $res->execute(array($linkpdo->lastInsertId()));
+                    $matchingData = $res->fetchAll(PDO::FETCH_ASSOC);
                     
-                /// Envoi de la réponse au Client
-                deliver_response(201, "Created", $matchingData);
-            } else {
-                /// Envoi de la réponse au Client
-                deliver_response(400, "Erreur de syntaxe : veuillez spécifier la phrase à ajouter", NULL);
-            }
+                    /// Envoi de la réponse au Client
+                    deliver_response(201, "Created", $matchingData);
+
+                } else {deliver_response(404, "Erreur de syntaxe : Phrase introuvable", NULL);}
+            } else {deliver_response(403, "Erreur d'autorisation", NULL);}
+            
             break;
 
         /// Cas de la méthode PUT
@@ -155,19 +146,8 @@
 
                     /// Envoi de la réponse au Client
                     deliver_response(200, "Status: OK", $matchingData);
-                } else {
-                    // Erreur de syntaxe
-                    deliver_response(400, 
-                    "Erreur de syntaxe : veuillez spécifier tous les champs dans le body (sauf la date d'ajout et la date de modification).", 
-                    $postedData);
-                }
-            } else {
-                // Erreur de syntaxe
-                deliver_response(400, 
-                    "Erreur de syntaxe : veuillez spécifier l'identifiant de la ressource dans l'URL", 
-                    NULL);
-            }
-            
+                } else {deliver_response(404,"Erreur de syntaxe : Contenu ou pseudo introuvables", $postedData);}
+            } else {deliver_response(404, "Erreur de syntaxe : ID introuvable dans l'URL",NULL);}
             break;
 
         // Cas de la méthode DELETE
@@ -203,7 +183,7 @@
                     }
                 }  else {deliver_response(403, "Erreur d'autorisation", NULL);}                
             } else{
-                deliver_response(400, "Erreur de syntaxe : ID de l'article introuvable", NULL);
+                deliver_response(404, "Erreur de syntaxe : ID de l'article introuvable", NULL);
             }
             break;
         default:

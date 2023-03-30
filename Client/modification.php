@@ -36,6 +36,7 @@
                             'header' => array(
                                 'Content-Type: application/json'."\r\n"
                                 .'Content-Length: '.strlen($data_string)."\r\n"
+                                .'Authorization: Bearer ' . $_SESSION["token"] . "\r\n"
                             )
                         )
                     ))
