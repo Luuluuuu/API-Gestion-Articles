@@ -21,3 +21,7 @@ Login -> Thao / Mdp -> tuttut
 Login -> Fantin / Mdp -> pwet  
 Login -> Mario / Mdp -> wihi  
 Login -> Prof / Mdp -> travail
+
+## Fichier Client/lienAPI.php
+
+Changer les URL des deux constantes pour l'API REST de l'application et l'API authentification
