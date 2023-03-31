@@ -1,10 +1,12 @@
 <?php
     session_start();
+    require_once("lienAPI.php");
+
     $data = array("ADislike" => $_GET["dislike"]);
     $data_string = json_encode($data);
     /// Envoi de la requête
     $result = file_get_contents(
-        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=23', 
+        API_APP . '?id=23', 
         false,
         stream_context_create(array(
             'http' => array(

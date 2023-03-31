@@ -15,9 +15,9 @@
         </form>
 
         <?php
-
             if (isset($_GET['modifier'])) {
                 session_start();
+                require_once("lienAPI.php");
                 header("Location:index.php");
                 
                 $contenu = $_GET['contenu'];
@@ -27,7 +27,7 @@
                 $data_string = json_encode($data);
                 /// Envoi de la requête
                 $result = file_get_contents(
-                    'http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=' . $_GET["id"], 
+                    API_APP . '?id=' . $_GET["id"], 
                     false,
                     stream_context_create(array(
                         'http' => array(

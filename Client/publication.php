@@ -1,6 +1,7 @@
 <?php
     session_start();
     header("Location:index.php");
+    require_once("lienAPI.php");
 
     if (isset($_GET['ajouter'])) {
         $contenu = $_GET['contenu'];
@@ -9,7 +10,7 @@
         $data_string = json_encode($data);
         /// Envoi de la requête
         $result = file_get_contents(
-            'http://localhost/API-Gestion-Articles/Serveur/apiApp.php', 
+            API_APP, 
             false,
             stream_context_create(array(
                 'http' => array(

@@ -38,9 +38,11 @@
 
         <div>
             <?php
+                require_once("lienAPI.php");
+
                 if (isset($_SESSION["token"])){
                     $result = file_get_contents(
-                        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
+                        API_APP,
                         false,
                         stream_context_create(array('http' => 
                                             array('method' => 'GET',
@@ -48,7 +50,7 @@
                     );
                 } else {
                     $result = file_get_contents(
-                        'http://localhost/API-Gestion-Articles/Serveur/apiApp.php',
+                        API_APP,
                         false,
                         stream_context_create(array('http' =>array('method' => 'GET'))) 
                     );

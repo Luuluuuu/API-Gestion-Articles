@@ -1,6 +1,7 @@
 <?php
-
     session_start();
+    require_once("lienAPI.php");
+
     if (isset($_POST['connexion'])) {
         $login = $_POST['login'];
         $mdp = $_POST['mdp'];
@@ -13,7 +14,7 @@
         
         try {
             $result = @file_get_contents(
-                'http://localhost/API-Gestion-Articles/Serveur/apiAuth.php', // remplacer lien par le serveur
+                API_AUTH, // remplacer lien par le serveur
                 false,
                 stream_context_create(array(
                     'http' => array(

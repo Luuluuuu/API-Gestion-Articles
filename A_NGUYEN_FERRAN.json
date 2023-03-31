@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "5e70aeaf-57a2-4b2b-82e5-9546dee03c1f",
+		"name": "API_Gestion_Articles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25746289"
+	},
+	"item": [
+		{
+			"name": "POST Token Publisher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"Fantin\",\r\n    \"mdp\":\"pwet\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiAuth.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiAuth.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Token Moderator",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login\":\"Lulu\",\r\n    \"mdp\":\"uwu\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiAuth.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiAuth.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET not connected",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET connected as Publisher",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDE3ODc0M30.SWrq-48gVcgTU5sYiTwWC-GHSVCO5NYBI10yEwzvbCQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET connected as Moderator",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikx1bHUiLCJyb2xlVXRpbGlzYXRldXIiOiJNb2RlcmF0b3IiLCJleHAiOjE2ODAxNzk3MTN9.EuuITu5rTyQ2K7JBJjLLooHZ2u2djQuIoqkl9L_RRmM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Publisher",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDIwNzIxMn0.UrVQ3RR1A72lhEFRVmPuss4A5DT4ax8WK7qiahK10I8",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Moderator",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIiLCJ1c2VybmFtZSI6Ikx1bHUiLCJyb2xlVXRpbGlzYXRldXIiOiJNb2RlcmF0b3IiLCJleHAiOjE2ODAyMDg0ODZ9.qapBbKP2XhuiwtQcYVHDuzdZ6_lhSn3R9TFeDHOBSr0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Publisher",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDI0Mzc1NH0.k9ko1l1WIc5HCKm51bmj9yh-kAr3Ki7GJqjB8atO-8I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contenu\":\"test publisher post\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Publisher",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDI0Mzc1NH0.k9ko1l1WIc5HCKm51bmj9yh-kAr3Ki7GJqjB8atO-8I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"contenu\":\"oui\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "23"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Like",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDI2MzY2NX0.hDMVAhaayC1fG8UhqvHnQLG0fbvgl-o6II273sSbh6I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 23,\r\n    \"ALike\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "23"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Dislike",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMiLCJ1c2VybmFtZSI6IkZhbnRpbiIsInJvbGVVdGlsaXNhdGV1ciI6IlB1Ymxpc2hlciIsImV4cCI6MTY4MDI2MzY2NX0.hDMVAhaayC1fG8UhqvHnQLG0fbvgl-o6II273sSbh6I",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 23,\r\n    \"ADislike\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/API-Gestion-Articles/Serveur/apiApp.php?id=23",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"API-Gestion-Articles",
+						"Serveur",
+						"apiApp.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "23"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
